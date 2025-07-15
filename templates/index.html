@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        textarea {
+            height: 80px;
+            resize: vertical;
+        }
+        .btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            transition: background-color 0.3s;
+        }
+        .btn:hover {
+            background-color: #45a049;
+        }
+        .result {
+            margin-top: 30px;
+            text-align: center;
+            padding: 20px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        .qr-image {
+            max-width: 100%;
+            height: auto;
+            margin: 20px 0;
+        }
+        .download-btn {
+            background-color: #2196F3;
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            display: inline-block;
+            margin-top: 10px;
+        }
+        .download-btn:hover {
+            background-color: #1976D2;
+        }
+        .error {
+            color: red;
+            text-align: center;
+            margin-top: 10px;
+        }
+        .success {
+            color: green;
+            text-align: center;
+            margin-top: 10px;
+        }
+        .info {
+            background-color: #e7f3ff;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            border-left: 4px solid #2196F3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔳 QR Code Generator</h1>
+        
+        <div class="info">
+            <strong>Cara menggunakan:</strong>
+            <ul>
+                <li>Masukkan text, URL, atau data lainnya</li>
+                <li>Klik "Generate QR Code"</li>
+                <li>QR code akan muncul dan bisa didownload</li>
+            </ul>
+        </div>
+
+        <form method="POST" action="/generate">
+            <div class="form-group">
+                <label for="text">Text atau URL:</label>
+                <textarea name="text" id="text" placeholder="Masukkan text, URL, atau data lainnya di sini..." required>{{ text if text else '' }}</textarea>
+            </div>
+            
+            <button type="submit" class="btn">Generate QR Code</button>
+        </form>
+
+        {% if error %}
+            <div class="error">{{ error }}</div>
+        {% endif %}
+
+        {% if success %}
+            <div class="success">QR Code berhasil dibuat!</div>
+        {% endif %}
+
+        {% if qr_code %}
+            <div class="result">
+                <h3>QR Code Anda:</h3>
+                <img src="data:image/png;base64,{{ qr_code }}" alt="QR Code" class="qr-image">
+                <br>
+                <a href="/download/{{ text }}" class="download-btn">📥 Download QR Code</a>
+                <p><strong>Text:</strong> {{ text }}</p>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>
